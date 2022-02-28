@@ -12,7 +12,7 @@ class PersonModel{
 
   // Regra de negocio da aplicacao
 
-  double calculateIMC(){
+  double getIMC(){
     var result = weight / math.pow(height, 2);
     return result;
   }
