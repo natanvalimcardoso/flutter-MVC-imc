@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_imc_flutter/src/controller/imc_controller.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  HomePage({Key? key}) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final controller = ImcController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller.addListener(() {
-      setState(() {});
-    },);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +20,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   TextField(
-                    onChanged: (text) {
-                      controller.setWeight(text); //forma resumida é a altura
-                    },
+                    onChanged: controller.setWeight,
                     decoration: InputDecoration(
                       labelText: 'Peso (kg)',
                     ),
@@ -58,12 +42,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Expanded(
                     child: Center(
-                      child: Text(
-                        controller.result,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: AnimatedBuilder(
+                        //para puxar o ChangeNotifier
+                        animation: controller,
+                        builder: (context, child) {
+                          return Text(
+                            controller.result,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
